@@ -11,6 +11,11 @@ Dokumentation:
 - Bilder (Dokumentation)
   - gerenderte Ansichten des Projekts, Zusammenbau aller Komponenten
 
+# Ordnerstruktur
+
+- `printing/new_2024`: STL-Dateien für den Druck, Prototyping, analog zu ``build`` oder ``bin`` verzeichnis in der Softwareentwicklung
+- 
+
 
 # Komponenten
 - Grundstruktur
