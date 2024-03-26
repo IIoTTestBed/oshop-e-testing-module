@@ -1,0 +1,12 @@
+# ignore everything
+*
+
+# don't ignore directories
+!*/
+
+# don't ignore .gitignore
+!.gitignore
+
+!doc/**
+!README.md
+
