@@ -1,0 +1,155 @@
+Dokumentation:
+
+- Aufbauanleitung
+  - Visualisierungen:
+    - der einzelnen Schritte
+    - der gesamten Maschine
+- Schaltplan
+  - Gesamtschaltplan
+- Pneumatikplan
+- Flussdiagramm über Funktionsprinzip der Maschine
+- Bilder (Dokumentation)
+  - gerenderte Ansichten des Projekts, Zusammenbau aller Komponenten
+
+# Ordnerstruktur
+
+- `printing/new_2024`: STL-Dateien für den Druck, Prototyping, analog zu ``build`` oder ``bin`` verzeichnis in der Softwareentwicklung
+- 
+
+
+# Komponenten
+- Grundstruktur
+    - Alu-Profile
+        - aus HTW-Bestand
+        - Probleme:
+            - evtl. genormt, Normen recherchieren
+            - prüfen ob Systeme zueinander kompatibel sind
+            - Linearführung verwendet anderes Profil, Nutensteine nicht kompatibel
+        - Konstruktion für Festo CP Factory Modul
+    - Linearführung (Z-Achse)
+        - Ornder: `linear-motion-bearing`
+        - Basis Komponente (Design):
+            - Ordner: `c-beam-linear-actuator-250mm`
+            - Format: STEP
+            - 
+            - Quelle: https://grabcad.com/library/c-beam-linear-actuator-250mm-1
+            - Hersteller: https://openbuildspartstore.com/c-beam-linear-actuator-bundle/
+            - Lizenzvermerk: "This design incorporates OpenBuilds, LLC design work(s) shared Open Source under the CC BY-SA 4.0 License."
+            - Datum: 13.06.2023
+        - Probleme:
+            - Lizenzvermerk nur auf Webseite/Plattform vorhanden
+            - Lizenz kann vom Urheber zu jedem Zeitpunkt angepasst werden
+            - kein Lizenzvermerk direkt in der STEP-Datei
+            - keine Lizenzdatei im Downloadarchiv vorhanden
+            - dadurch keine Zuordnung zur konkreten Datei zu späterem Zeitpunkt mehr möglich
+            - weitere Dokumente (Anleitungen, BOM, etc.) nur über Webseite nicht als gebündeltes Archiv versioniert
+    - Steppermotor (Nema 23)
+      - Signal für Richtung
+      - Puls für Drehbewegung
+    - Treibermodul (ACT Motor DM 542)
+      - wandelt Befehle vom Arduino in elektrische Signale an den Motor um (Rechtecksignal)
+    - Arduino M0 Pro
+      - Generiert Pulssignal
+      - Gibt Richtung vor
+    - Endlagensensoren
+      - Start-, Stopsignale
+      - Halter:
+        - Datei: `sensor_frame.prt`
+        - selbst konstruiert
+        - Author: Valentin Petzold
+        - Lizenz: wird noch geklärt
+      - Sensoren
+        - Pepperl+Fuchs `NBB2-8GM30-E2`
+        - Datei: `cad6084.stp`
+        - Quelle: https://www.pepperl-fuchs.com/germany/de/classid_143.htm?view=productdetails&prodid=90059
+        - Zukaufteil
+        - evtl. Norm?
+  - Werkzeuglager
+    - Antrieb zum Schwenken des Werkzeughalters
+      - Festo `DRVS-12-180-P`
+      - Ordner: `drvs12-rot_motor/UG3DNX1926`
+      - Lizenz: Nutzungsbedingungen von CADENAS, https://www.cadenas.de/nutzungsbedingungen-3d-cad-modelle
+        - Nutzungsbedingungen prüfen
+      - erweitert mit Endlagensensor Festo `SRBS-Q12-12`
+        - Modelle siehe oben
+    - Werkzeughalter
+      - `tool_holder`
+      - `tool_storage_part1.prt`
+        - zweiteilig symmetrisch, muss doppelt gedruckt und montiert werden
+        - selbst konstruiert
+        - Author: Valentin Petzold
+        - Lizenz: wird noch geklärt
+      - `spacer_storage_mounting`
+        - Adapter für Flansch zu Werkzeughalter
+        - selbst konstruiert
+        - Author: Valentin Petzold
+        - Lizenz: wird noch geklärt
+    - Aufnahme des Werkzeughalter
+      - `mounting`
+        - Einzelteile:
+          - `mounting_storage`
+            - Befestigung des Werkzeuglagers am Rahmen
+            - wg. Druckbarkeit in 2 Teile aufgeteilt (`*_{p1|p2}.prt`)
+            - selbst konstruiert
+            - Author: Valentin Petzold
+            - Lizenz: wird noch geklärt
+          - `spacer_storagemount_rotdev`
+            - Abstandshalter zwischen Antrieb und Halterung
+            - Justierung des Abstands zwischen Werkzeuglager und Halterung
+            - selbst konstruiert
+            - Author: Valentin Petzold
+            - Lizenz: wird noch geklärt
+      - selbst konstruiert
+      - Author: Valentin Petzold
+      - Lizenz: wird noch geklärt
+    - Werkzeug Verriegelung
+      - `tool_locking_system`
+      - Dummies
+        - `dummy_piston.prt`
+          - Dummy zum testen der mechanischen Verriegeln des Werkzeughalters
+          - später durch pneumatischer Kolben ersetzt
+        - `pull_clip.prt`
+          - Clip zum mechanischen Verriegeln
+      - Komponenten:
+        - Klemme `clamp`
+          - `tool_storage_lock_plate`
+          - selbst konstruiert
+          - Author: Valentin Petzold
+          - Lizenz: wird noch geklärt
+          - Probleme:
+            * Muttern zur Montage auf Welle nicht mit modelliert
+        - Kolben `piston_actuator`
+          - Kaufteil
+          - Festo `ADVC-10-10-APA`
+            - Ordner: `advc-10-10-apa-kurzhub`
+            - Lizenz: CADENAS (siehe oben), eingeschränkt
+          - Probleme:
+            - verwendete Modelle von Festo waren kleiner als die realen Abmaße des gelieferten Kolbens
+            - keine Lizenzdatei beigefügt
+        - Kolbenhalter `piston_mounting_structure`
+          - Komponenten:
+            - `piston_mounting_frame`
+            - `piston_mounting_plate`
+          - Probleme:
+            - Halter liegt sehr eng an Kolben an, erfordert u.U. immer Anpassung an Modelle anderer Hersteller
+            - Befestigungsschrauben nicht mit modelliert
+            - könnte eleganter konstruiert werden durch montage am vorderen Ende, eher Konstruktionsschwäche des Kolbens
+          - selbst konstruiert
+          - Author: Valentin Petzold
+          - Lizenz: wird noch geklärt
+    - Pneumatik
+    - Festodockingmodul (Festo +G1:XD12)
+    - Ventilinsel ()
+
+## Probleme
+
+- Programmierung:
+  * Programmierung der Ansteuerung erfolgt über Tablet (IPad) mit Festo Software ()
+    * Name der Modellierungssprache? --\> Festo
+    * Entwicklungsstände der Festosoftware erfolgen entkoppelt von Konstruktion im Repository
+      - zu Prüfen:
+        - wo liegen Daten?
+        - können diese exportiert werden?
+        - kann der Vorgang (Speichern, Export, Commit, push) automatisiert werden?
+        - Ist Dateiformat offen, menschenlesbar, kann ein Versionsvergleich druchgeführt werden?
+        - Wie finden Tests statt?
