@@ -22,7 +22,7 @@
             - erforderlicher Hubweg
             - welche Kräfte treten auf
             - Bewegungscharakteristik (linear, kreisbahn, ...)
-        - anhand der Parameter bestimmung des Kolbendurchmessers nach Herstellern (Kataloge, Webseiten)
+        - anhand der Parameter Bestimmung des Kolbendurchmessers nach Herstellern (Kataloge, Webseiten)
         - Bewertung Herstellerauswahl hinsichtlich
             - Bauteilgröße
             - Schnittstellen
@@ -32,7 +32,7 @@
             - Verfügbarkeit von CAD-Modellen:
                 - Festo: sehr gut
 5. Patentrecherche bzw. Verletzung Rechte Dritte
-    - Wie hoch ist der tendenzielle Schadden im Falle einer Patentrechtsverletzung?
+    - Wie hoch ist der tendenzielle Schaden im Falle einer Patentrechtsverletzung?
         - Unterlassung der Produktion/Verkauf
         - nachträglicher Erwerb einer Patentlizenz
         - Schadensforderung (Gewinnausfall des Patentinhabers usw.)
