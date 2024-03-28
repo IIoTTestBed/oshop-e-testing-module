@@ -1,6 +1,5 @@
 {
     "files.exclude": {
         "**/.git": false
-   },
-   "editor.fontSize": 18
+   }
 }
