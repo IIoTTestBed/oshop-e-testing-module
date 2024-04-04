@@ -1,0 +1,218 @@
+# Functional Structure of the Hardware
+- Breakdown of the functional structure based on DIN EN 81346
+
+- **`e_testing_module.prt`**
+    - Main assembly
+    - Frame made of aluminum profiles
+        - from HTW stock
+        - TODO: search for compatible products
+        - Construction for Festo CP Factory Module
+- **`base_module`**
+    - CPFactory base module
+    - Model not included in the public OSH-Repository
+    - Manufacturer/Type: `Festo`
+    - License: proprietary
+    - `band_zubehör.prt`
+    - `band.prt`
+    - `befestigungs_rails.prt`
+    - `festo_base_module_x.prt`
+    - `festo_base_module.prt`
+- **`linear-motion-bearing`**
+    - **`c-beam-linear-actuator-250mm`**
+        - Linear actuator (Z-axis)
+        - Basic component (Design):
+            - Folder: `original`
+            - Format: STEP
+            - Source: https://grabcad.com/library/c-beam-linear-actuator-250mm-1
+            - Manufacturer: https://openbuildspartstore.com/c-beam-linear-actuator-bundle/
+            - License notice: "This design incorporates OpenBuilds, LLC design work(s) shared Open Source under the CC BY-SA 4.0 License."
+            - Date: 13.06.2023
+        - Issues:
+            - Uses a different profile (US/inch), dowels used in the main assembly are not compatible
+            - License notice only available on the website/platform
+            - License can be adjusted by the author at any time
+            - No license notice directly in the STEP file
+            - No license file in the download archive available
+            - Therefore, no assignment to the specific file possible at a later time
+            - Further documents (instructions, BOM, etc.) only available over the website not versioned as a bundled archive
+        - Stepper motor
+            - Manufacturer/Type: `Nema 23`
+            - Controlled via Arduino
+        - Aluminum profile
+        - Mounting plates
+        - Wave coupling
+        - **`C-Beam Linear Actuator 250mm_stp.prt`**
+            - Siemens NX import of `original/C-Beam Linear Actuator 250mm.stp`
+        - **`c-beam_linear_actuator_sledge.prt`**
+            - Sledge
+        - **`c-beam-linear-actuator-spindle.prt`**
+            - Spindle
+        - **`linear_guide.prt`**
+            - Assembly
+    - **`limit-switch`**
+        - End switch sensors
+        - **`sensor_frame.prt`**
+            - Holder
+            - Self-constructed
+            - Author: Valentin Petzold
+            - License: CERN-OHL-S
+        - `cad6084_stp.prt`
+            - Siemens NX import of `original/cad6084.stp`
+            - Model not included in the public OSH-Repository
+            - Sensors
+            - Basic component (Design):
+                - Manufacturer/Type: `Pepperl+Fuchs NBB2-8GM30-E2`
+                - Purchase part
+                - File: `original/cad6084.stp`
+                - Source: https://www.pepperl-fuchs.com/germany/de/classid_143.htm?view=productdetails&prodid=90059
+                - License: CADENAS, proprietary
+    - **`mounting_adapter`**
+        - **`mounting_adapter.prt`**
+- **`module_structure`**
+    - **`module_structure.prt`**
+- **`tool_changer_system`**
+    - **`Actuation_Mechanism`**
+        - Piston cylinder to trigger tool change
+        - Self-constructed
+        - Author: Valentin Petzold
+        - License: CERN-OHL-S
+        - `festo_piston_rotating_mount_25mm_hub`
+            - Purchase part
+            - Model not included in the public OSH-Repository
+            - Manufacturer/Type: `Festo ADN-16-20-A-P-A`
+            - Basic component (Design):
+                - Folder: `UG3DNX1926`
+                - License:
+                    - proprietary
+                    - `readme-and-terms-of-use-3d-cad-models.txt`
+                        - https://www.cadenas.de/nutzungsbedingungen-3d-cad-modelle
+                            - §5 Terms of Use:
+                                - "[..] The customer may use the retrieved data for personal uses only."
+        - `separator_adapter.prt`
+        - `slotted pan head _ se_bolt_female.prt`
+        - `slotted pan head _ se_bolt_male.prt`
+    - **`Housing`**
+        - Housing and mounting of the tool change system
+        - Self-constructed
+        - Author: Valentin Petzold
+        - License: CERN-OHL-S
+        - `inner_housing_separator.prt`
+            - Connection element/bridge between the base holder and tool holder
+        - `Mag_Tool_Changer_Baseplate.prt`
+            - Base holder and connection to the linear actuator, holds the tool holder and locking mechanism
+        - `shaft_toolhead.prt`
+            - Shaft, on which the magnetic lock is mounted
+    - **`Tool_Changer_Head`**
+        - `Bearing 619-5.prt`
+            - Bearing, connection of the rotating mechanism of the magnets with the shaft
+            - Standard part, model from Grabcad
+            - Link: https://grabcad.com/library/bearing-619-5-1
+            - Format: STEP
+            - License: none provided, unclear, usage terms of Grabcad
+        - `conical_magnet.prt`
+            - Conical magnet for centering the tool on the holder
+            - Purchase part
+            - Redesigned according to product data sheet
+            - Author: Valentin Petzold
+            - License: CERN-OHL_S
+        - `MagToolChanger_HeadBase.prt`
+            - Carrier structure/housing, connection to the `Housing` and locking mechanism
+            - Adapted construction see `Tool_changer_osh_original_files`
+        - `MagToolChanger_Lockplate.prt`
+            - Rotating plate with magnets, driven by a pneumatic cylinder
+            - Previously `MagToolChanger_Lockplate_part1.prt`
+        - `MagToolChanger_Lockplate_part2.prt`
+            - Obsolete, as the gap can be bridged with a print parameter, making a print possible with a model
+        - `plate_magtoolchanger_headbase.prt`
+            - Cover and holder for conical magnets
+        - `tool_changer_rotation_plate.prt`
+            - Obsolete, first draft of the `tool_storage_system`
+    - `Tool_changer_osh_original_files`
+        - Tool change system, OSH
+        - Source: https://github.com/totaldesaster/toolchanger
+        - License: GPLv3
+    - **`Toolhead Assembly_stp.prt`**
+- **`tool_storage_system`**
+    - Tool storage
+    - **`drvs12-rot_motor`**
+        - Drive for swinging the tool holder
+        - Model not included in the public OSH repository
+        - Purchase part
+        - Manufacturer/Type: `Festo DRVS-12-180-P`
+        - Folder: `UG3DNX1926`
+        - License: Terms of use by CADENAS, <https://www.cadenas.de/nutzungsbedingungen-3d-cad-modelle>, proprietary
+        - Extended with end stop sensor: `Festo SRBS-Q12-12`
+            - Models see above
+    - **`mounting`**
+        - Mounting of the tool holder
+        - Self-constructed
+        - Author: Valentin Petzold
+        - License: CERN-OHL-S
+        - **`mounting_storage.prt`**
+            - Mounting of the tool storage to the frame
+            - Due to printability, divided into 2 parts (`*_{p1|p2}.prt`)
+        - **`spacer_storagemount_rotdev.prt`**
+            - Spacer between drive and mounting
+            - Adjustment of the distance between tool storage and mounting
+    - **`tool_holder`**
+        - Tool holder
+        - Self-constructed
+        - Author: Valentin Petzold
+        - License: CERN-OHL-S
+        - **`tool_storage_part1.prt`**
+            - Symmetrical, must be printed and mounted twice
+        - **`spacer_storage_mounting`**
+            - Adapter for flange to tool holder
+    - **`tool_locking_system`**
+        - Tool locking
+        - **`clamp`**
+            - Clamp for securing the tool
+            - `tool_storage_lock_plate`
+                - Self-constructed
+                - Author: Valentin Petzold
+                - License: CERN-OHL-S
+                - TODO: Model screws --> Assembly instructions
+        - `dummies`
+            - `dummy_piston.prt`
+                - Dummy for testing the mechanical locking of the tool holder
+                - Later replaced by a pneumatic piston
+            - `pull_clip.prt`
+                - Clip for mechanical locking
+        - **`piston_actuator/advc-10-10-apa-kurzhub`**
+            - Piston to trigger clamping
+            - Purchased part
+            - Model not included in the public OSH repository
+            - Manufacturer/Type: `Festo ADVC-10-10-APA`
+            - License: CADENAS, proprietary
+            - Issues:
+                - The Festo models used were smaller than the actual dimensions of the delivered piston
+        - **`piston_mounting_structure`**
+            - Mounting for the piston
+            - Components:
+                - `piston_mounting_frame`
+                - `piston_mounting_plate`
+            - Issues:
+                - The mounting is very tight on the piston, requires adjustment for models from other manufacturers
+                - Mounting screws not modeled
+                - Could be more elegantly constructed by mounting at the front end, rather a construction weakness of the piston
+            - Self-constructed
+            - Author: Valentin Petzold
+            - License: CERN-OHL-S
+        - **`tool_storage_print_vers.prt`**
+- **`tools`**
+    - `plate_tool_board.prt`
+    - `spacer_10x3.6_id3.prt`
+
+- not yet included in the model:
+- Driver module
+    - Converts commands from the microcontroller into electrical signals for the motor (rectangular signal)
+    - Manufacturer/Type: `ACT Motor DM 542`
+- Microcontroller
+    - Manufacturer/Type: `Arduino M0 Pro`
+- Pneumatics
+    - Valve assembly
+        - Manufacturer/Type: `Festo`
+        - TODO: Add exact designation!
+- Docking module:
+    - Interface to tablet/CP-Factory module
+    - Manufacturer/Type: `Festo +G1:XD12`
