@@ -137,6 +137,7 @@
     - **`drvs12-rot_motor`**
         - Antrieb zum Schwenken des Werkzeughalters
         - Modell nicht im öffentlichen OSH-Repository enthalten
+        - Zukaufteil
         - Hersteller/Typ: `Festo DRVS-12-180-P`
         - Ordner: `UG3DNX1926`
         - Lizenz: Nutzungsbedingungen von CADENAS, <https://www.cadenas.de/nutzungsbedingungen-3d-cad-modelle>, proprietär
