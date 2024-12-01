@@ -1,0 +1,273 @@
+﻿TYPE "udtToolCha_Sig_IN"
+VERSION : 0.1
+   STRUCT
+      Tool_is_loaded { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_is_Locked { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_is_Released { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_is_Pos1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_is_Pos2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolChanger_is_Locked { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolChanger_is_Released { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Lift_is_down { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Lift_is_up { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+   END_STRUCT;
+
+END_TYPE
+
+TYPE "udtToolCha_Sig_OUT"
+VERSION : 0.1
+   STRUCT
+      ToolChanger { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_Select { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolStation_Lock { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Toolstation_Releas { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Lift_down { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Lift_up { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+   END_STRUCT;
+
+END_TYPE
+
+FUNCTION_BLOCK "Oshop_ToolChanger"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      Start { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      UseTool { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+      P_Signals_IN { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : "udtToolCha_Sig_IN";
+   END_VAR
+
+   VAR_OUTPUT 
+      P_Signals_OUT { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : "udtToolCha_Sig_OUT";
+   END_VAR
+
+   VAR 
+      Step { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt := 0;
+      StepMem { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+      StepDelay {InstructionName := 'TON_TIME'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'; S7_SetPoint := 'False'} : TON_TIME;
+      MeasuringTime {InstructionName := 'TON_TIME'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TON_TIME;
+      RT_Start {InstructionName := 'R_TRIG'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'; S7_SetPoint := 'False'} : R_TRIG;
+   END_VAR
+
+   VAR_TEMP 
+      InitPos : Bool;
+   END_VAR
+
+
+BEGIN
+	(****************************************************************************************
+	 * program name:    Oshop_ToolChager
+	 * author:          ToSchi
+	 * owner:           Hochschule für Technik und Wirtschaft Dresden
+	 * 
+	 * description:
+	 * 
+	 * 
+	 * 
+	 * 
+	 ****************************************************************************************
+	 *)
+	
+	//trigger   -----------------------------------------------------------------------------
+	#RT_Start(CLK := #Start);
+	
+	
+	//timer   -------------------------------------------------------------------------------
+	#MeasuringTime(IN := (#Step = 60),
+	               PT := t#2s);
+	
+	#StepDelay(IN := (#Step = #StepMem),
+	           PT := t#2s);
+	
+	
+	//initialization   ----------------------------------------------------------------------
+	#InitPos := #P_Signals_IN.Lift_is_up AND #P_Signals_IN.ToolStation_is_Locked AND #P_Signals_IN.ToolChanger_is_Released;
+	
+	#StepMem := #Step;
+	
+	CASE #Step OF
+	    0:
+	        #P_Signals_OUT.Lift_down := 0;
+	        #P_Signals_OUT.Lift_up := 0;
+	        #P_Signals_OUT.ToolChanger := 0;
+	        #P_Signals_OUT.ToolStation_Lock := 0;
+	        #P_Signals_OUT.Toolstation_Releas := 0;
+	        #P_Signals_OUT.ToolStation_Select := 0;
+	        #Step := 1;
+	        
+	        
+	    1:
+	        #P_Signals_OUT.ToolStation_Lock := 1;
+	        #P_Signals_OUT.Toolstation_Releas := 0;
+	        IF #P_Signals_IN.ToolStation_is_Locked AND NOT #P_Signals_IN.ToolStation_is_Released AND #StepDelay.Q THEN
+	            #Step := 2;
+	        END_IF;
+	        
+	        
+	    2:
+	        #P_Signals_OUT.ToolChanger := 1;
+	        IF #P_Signals_IN.ToolChanger_is_Locked AND NOT #P_Signals_IN.ToolChanger_is_Released AND #StepDelay.Q THEN
+	            #Step := 3;
+	        END_IF;
+	        
+	        
+	    3:
+	        #P_Signals_OUT.ToolStation_Select := 0;
+	        IF #P_Signals_IN.ToolStation_is_Pos1 AND NOT #P_Signals_IN.ToolStation_is_Pos2 AND #StepDelay.Q THEN
+	            #Step := 4;
+	        END_IF;
+	        
+	        
+	    4:
+	        IF NOT #P_Signals_IN.Tool_is_loaded THEN
+	            #Step := 7;
+	        ELSE
+	            #Step := 5;
+	        END_IF;
+	        
+	        
+	    5:
+	        #P_Signals_OUT.ToolStation_Select := 1;
+	        IF NOT #P_Signals_IN.ToolStation_is_Pos1 AND #P_Signals_IN.ToolStation_is_Pos2 AND #StepDelay.Q THEN
+	            #Step := 6;
+	        END_IF;
+	        
+	        
+	    6:
+	        IF NOT #P_Signals_IN.Tool_is_loaded THEN
+	            #Step := 7;
+	        ELSE
+	            #Step := 9;
+	        END_IF;
+	        
+	        
+	    7:
+	        #P_Signals_OUT.ToolStation_Lock := 0;
+	        #P_Signals_OUT.Toolstation_Releas := 1;
+	        IF NOT #P_Signals_IN.ToolStation_is_Locked AND #P_Signals_IN.ToolStation_is_Released AND #StepDelay.Q THEN
+	            #Step := 9;
+	        END_IF;
+	        
+	        
+	    9:
+	        #P_Signals_OUT.Lift_up := 1;
+	        #P_Signals_OUT.Lift_down := 0;
+	        IF #P_Signals_IN.Lift_is_up AND NOT #P_Signals_IN.Lift_is_down AND #StepDelay.Q THEN
+	            #Step := 10;
+	        END_IF;
+	        
+	        
+	    10:
+	        #P_Signals_OUT.ToolStation_Lock := 1;
+	        #P_Signals_OUT.Toolstation_Releas := 0;
+	        IF #P_Signals_IN.ToolStation_is_Locked AND NOT #P_Signals_IN.ToolStation_is_Released AND #StepDelay.Q THEN
+	            #P_Signals_OUT.ToolChanger := 0;
+	            IF NOT #P_Signals_IN.ToolChanger_is_Locked AND #P_Signals_IN.ToolChanger_is_Released AND #StepDelay.Q THEN
+	                #Step := 15;
+	            END_IF;
+	        END_IF;
+	        
+	        
+	    15:
+	        #P_Signals_OUT.Lift_up := TRUE;
+	        IF #InitPos AND #UseTool <> 0 AND #RT_Start.Q THEN
+	            #Step := #UseTool + 20;
+	        END_IF;
+	        
+	        
+	    21: 
+	        IF NOT #P_Signals_IN.ToolStation_is_Pos1 THEN
+	            #P_Signals_OUT.ToolStation_Select := 0;
+	        ELSE
+	            #Step := 25;
+	        END_IF;
+	        
+	        
+	    22: 
+	        IF NOT #P_Signals_IN.ToolStation_is_Pos2 THEN
+	            #P_Signals_OUT.ToolStation_Select := 1;
+	        ELSE
+	            #Step := 25;
+	        END_IF;
+	        
+	        
+	    25: 
+	        IF #P_Signals_IN.Tool_is_loaded THEN
+	            #Step := 30;
+	        ELSE
+	            //go to error step
+	            ;
+	        END_IF;
+	        
+	        
+	    30: 
+	        #P_Signals_OUT.ToolChanger := TRUE;
+	        
+	        IF #P_Signals_IN.ToolChanger_is_Locked THEN
+	            #Step := 40;
+	        END_IF;
+	        
+	        
+	    40:
+	        #P_Signals_OUT.ToolStation_Lock := FALSE;
+	        #P_Signals_OUT.Toolstation_Releas := TRUE;
+	        
+	        IF #P_Signals_IN.ToolStation_is_Released THEN
+	            #Step := 50;
+	        END_IF;
+	        
+	        
+	    50: 
+	        #P_Signals_OUT.Lift_up := FALSE;
+	        #P_Signals_OUT.Lift_down := TRUE;
+	        
+	        IF #P_Signals_IN.Lift_is_down THEN
+	            #Step := 60;
+	        END_IF;
+	        
+	        
+	    60:
+	        IF #MeasuringTime.Q THEN
+	            #Step := 70;
+	        END_IF;
+	        
+	        
+	    70:
+	        IF NOT #P_Signals_IN.Tool_is_loaded AND #P_Signals_IN.ToolStation_is_Released THEN
+	            #Step := 80;
+	        ELSE
+	            //go to error step
+	            ;
+	        END_IF;
+	        
+	        
+	    80: 
+	        #P_Signals_OUT.Lift_up := TRUE;
+	        #P_Signals_OUT.Lift_down := FALSE;
+	        
+	        IF #P_Signals_IN.Lift_is_up THEN
+	            #Step := 90;
+	        END_IF;
+	        
+	        
+	    90:
+	        #P_Signals_OUT.ToolStation_Lock := TRUE;
+	        #P_Signals_OUT.Toolstation_Releas := FALSE;
+	        
+	        IF #P_Signals_IN.ToolStation_is_Locked THEN
+	            #Step := 100;
+	        END_IF;
+	        
+	        
+	    100:
+	        #P_Signals_OUT.ToolChanger := FALSE;
+	        
+	        IF #P_Signals_IN.ToolChanger_is_Released THEN
+	            #Step := 15;
+	        END_IF;
+	        
+	END_CASE;
+	
+	//---------------------------------------------------------------------------------------
+	//End   ---------------------------------------------------------------------------------
+END_FUNCTION_BLOCK
+

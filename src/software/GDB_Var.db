@@ -1,0 +1,13 @@
+﻿DATA_BLOCK "GDB_Var"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      Tool { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK
+

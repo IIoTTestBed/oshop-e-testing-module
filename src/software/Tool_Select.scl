@@ -1,0 +1,55 @@
+﻿FUNCTION_BLOCK "Tool_Select"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      Button_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Button_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      Lamp_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      Lamp_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      ToolNumber { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt := 0;
+   END_VAR
+
+   VAR 
+      RT_Button_1 {InstructionName := 'R_TRIG'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : R_TRIG;
+      RT_Button_2 {InstructionName := 'R_TRIG'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : R_TRIG;
+   END_VAR
+
+
+BEGIN
+	(****************************************************************************************
+	 * program name:    ToolSelect
+	 * author:          ToSchi
+	 * owner:           Hochschule für Technik und Wirtschaft Dresden
+	 * 
+	 * description:
+	 * 
+	 * 
+	 * 
+	 * 
+	 ****************************************************************************************
+	 *)
+	
+	//trigger   -----------------------------------------------------------------------------
+	#RT_Button_1(CLK := #Button_1);
+	#RT_Button_2(CLK := #Button_2);
+	
+	
+	//program   -----------------------------------------------------------------------------
+	IF #RT_Button_1.Q THEN
+	    #ToolNumber := 1;
+	ELSIF #RT_Button_2.Q THEN
+	    #ToolNumber := 2;
+	ELSIF #RT_Button_1.Q AND #RT_Button_2.Q THEN
+	    #ToolNumber := 0;
+	END_IF;
+	
+	#Lamp_1 := (#ToolNumber = 1);
+	#Lamp_2 := (#ToolNumber = 2);
+	
+	//---------------------------------------------------------------------------------------
+	//End   ---------------------------------------------------------------------------------
+END_FUNCTION_BLOCK
+
