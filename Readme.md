@@ -67,7 +67,7 @@ At the moment, the demonstrator has not yet reached a functional state. Currentl
 This public repository includes only freely licensed designs. Proprietary models have been removed.
 
 
-## Current TODOs:
+## Current TODOs
 
 - TODO:
     - [ ] Manage licenses using REUSE
@@ -91,7 +91,7 @@ This public repository includes only freely licensed designs. Proprietary models
 
 ## Dependencies
 
-- Arduino 
+- Arduino
     - Control of the linear drive (Z-axis)
 - Siemens NX
     - Needed for modifying CAD designs
@@ -102,10 +102,13 @@ This public repository includes only freely licensed designs. Proprietary models
 - Proprietary Models
     - This public repository does not include proprietary CAD models
     - See `doc/functional_hardware_structure.md` to see which components were excluded
+- Measure-Tools for the tool changer:
+    - Tester:
+        - `TinyProbe`: <https://github.com/wagiminator/ATtiny13-TinyProbe>
+        - `Continuity Tester`: <https://github.com/wagiminator/ATtiny13-ContinuityTester>
 
 
-
-## Project Structure 
+## Project Structure
 
 The project structure is based on the considerations of the `osh-dir-std`, but deviates from it to make it more understandable from the perspective of a constructor. This structure will undergo further changes during development.
 
@@ -122,7 +125,7 @@ The project structure is based on the considerations of the `osh-dir-std`, but d
         - Contains all source CAD-files in Siemens NX `.prt` format
         - See `doc/functional_hardware_structure.md` for detailed information about the assembly and submodules
         - `printing`: STL files for printing, prototyping, analogous to the `build` or `bin` directory in software development
-            - May be dropped in the future if we are able to automate the generation 
+            - May be dropped in the future if we are able to automate the generation
     - `software`
 - `LICENSES`
     - REUSE/SPDX license files for managing different licenses
@@ -139,6 +142,8 @@ For all self-created components, source texts, and documentation resources, the 
 - Software: `AGPL`
 - Hardware/Electronics: `CERN-OHL-S`
 - Documentation: `CC-BY-SA-4.0`
+
+Please refer the [documentation](doc/functional_hardware_structure.md) for detailed information about licensing of the used models.
 
 
 ## Versioning
@@ -235,3 +240,13 @@ gitGraph LR:
 - The branches `development` and `development'` are identical and should be displayed in the same line
 - `development'` represents a `rebase` on the corresponding commit where development should continue to avoid unnecessary merges
 - the plugin used for the diagram `mermaid.js` with `gitGraph` currently does not support `rebase`
+
+
+## Funding
+
+This OSH demonstrator was created as part of the Open Source Hardware Innovation Platform (OSHOP) project at HTW Dresden and is funded by the Federal Ministry for Research, Technology and Space as part of the T!Raum initiative.
+
+<img height="100" alt="BMFTR Logo" src="https://github.com/user-attachments/assets/4b9586d3-4d97-4cf7-9664-b2447280a50e" />
+<img height="100" alt="T!Raum Logo" src="https://github.com/user-attachments/assets/35a4b93f-2f70-4d65-8d94-a1a19e46b6d9" />
+<img height="100" alt="OSHOP Logo" src="https://github.com/user-attachments/assets/7406e7cb-01e4-4e16-bf5b-78ff56b9355e" />
+

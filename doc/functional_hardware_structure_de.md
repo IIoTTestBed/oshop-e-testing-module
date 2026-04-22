@@ -17,7 +17,7 @@
     - `befestigungs_rails.prt`
     - `festo_base_module_x.prt`
     - `festo_base_module.prt`
-- **`linear-motion-bearing`**
+- **`linear-motion-guide_lmg`**
     - **`c-beam-linear-actuator-250mm`**
         - Linearführung (Z-Achse)
         - Basis Komponente (Design):
